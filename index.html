@@ -13,15 +13,8 @@
         <h2>Loading Stadium Pass...</h2>
         <p>Connecting to venue network</p>
     </div>
-    <script type="text/javascript">
-      // 1. Grab the venue ID out of the link parameters immediately
-      const urlParams = new URLSearchParams(window.location.search);
-      const scannedRestaurantId = urlParams.get('restaurant_id') || 'default_venue';
-      
-      // 2. Safely store it in browser Session Storage memory
-      sessionStorage.setItem('active_venue', scannedRestaurantId);
 
-      // 3. Fire up the native Voiceflow script engine
+    <script type="text/javascript">
       (function(d, t) {
           var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
           v.onload = function() {
@@ -29,7 +22,10 @@
               verify: { projectID: '6a16b6e49710543c72225ef6' },
               url: 'https://general-runtime.voiceflow.com',
               versionID: 'production',
-              layout: 'page' // Forces it full screen on mobile right away
+              // NATIVE VARIABLE INJECTION STRATEGY
+              variables: {
+                restaurant_id: new URLSearchParams(window.location.search).get('restaurant_id') || 'default_venue'
+              }
             });
           }
           v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
